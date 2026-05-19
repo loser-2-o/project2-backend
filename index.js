@@ -78,6 +78,10 @@ app.get('/submissions', authMiddleware, async (req, res) => {
 
 app.patch('/submissions/:id', authMiddleware, async (req, res) => {
   const { status } = req.body
+  if (status === 'rejected') {
+    await Submission.findByIdAndDelete(req.params.id)
+    return res.json({ message: 'Submission deleted!' })
+  }
   const submission = await Submission.findByIdAndUpdate(
     req.params.id,
     { status },
