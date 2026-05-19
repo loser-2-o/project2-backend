@@ -56,9 +56,11 @@ app.post('/login', async (req, res) => {
   res.json({ message: 'Login successful!', token })
 })
 
-// Public - get all submissions with status
 app.get('/submissions/public', async (req, res) => {
-  const submissions = await Submission.find({}, 'title status')
+  const submissions = await Submission.find(
+    { status: { $ne: 'rejected' } },
+    'title status'
+  )
   res.json(submissions)
 })
 
